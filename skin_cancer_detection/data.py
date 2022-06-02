@@ -8,9 +8,7 @@ import requests
 from PIL import Image
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
-AWS_BUCKET_PATH = "s3://wagon-public-datasets/taxi-fare-train.csv"
-
+from tf.keras.utils import load_img
 
 
 def get_data_from_gcp(nrows= 5, local=False, optimize=False, **kwargs):
@@ -52,7 +50,11 @@ def get_data_from_gcp(nrows= 5, local=False, optimize=False, **kwargs):
         path = row['path']
 
         image = tf.io.read_file(path)
-        image = tf.io.decode_jpeg(image)
+        #image = tf.io.decode_jpeg(image)
+
+        # other try
+        image = load_img(image)
+
 
         # final_image = hair_removal(image)
         # image_resize = cv2.resize(final_image,(100,75))

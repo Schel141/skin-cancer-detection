@@ -10,7 +10,6 @@ import cv2
 import os
 import joblib
 import tensorflow as tf
-import tensorflow.keras
 from tensorflow.keras import models
 from tensorflow.keras import Sequential, layers
 from tensorflow.keras.layers import Reshape

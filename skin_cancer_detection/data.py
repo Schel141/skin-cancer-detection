@@ -4,10 +4,11 @@ import cv2
 from skin_cancer_detection.hairremoval import hair_removal
 import numpy as np
 import urllib
-
-
-AWS_BUCKET_PATH = "s3://wagon-public-datasets/taxi-fare-train.csv"
-
+import requests
+from PIL import Image
+import tensorflow as tf
+import matplotlib.pyplot as plt
+from tf.keras.utils import load_img
 
 
 def get_data_from_gcp(nrows= 5, local=False, optimize=False, **kwargs):
@@ -22,26 +23,48 @@ def get_data_from_gcp(nrows= 5, local=False, optimize=False, **kwargs):
     # create df for metadata
     skin_df = pd.read_csv('gs://wagon-data-871-daun/data/HAM10000_metadata.csv', nrows = nrows)
 
+    # create blob
+    # client = storage.Client()
+    # bucket = client.get_bucket('wagon-data-871-daun')
+    # blobs = bucket.list_blobs(prefix='data/HAM10000_all')
+    # images = []
+
+    # for idx, bl in enumerate(blobs):
+    #     if idx == 0:
+    #         continue
+    #     data = bl.download_as_string()
+    #     images.append(data)
+
+    # image = np.asarray(bytearray(source_blob.download_as_string()), dtype="uint8")
+    # image = cv2.imdecode(image, cv2.IMREAD_UNCHANGED)
+
     # load images into df
     skin_df['path'] = [f'gs://wagon-data-871-daun/data/HAM10000_all/{img}.jpg' for img in skin_df['image_id']]
+    # skin_df['path'] = [f'https://storage.cloud.google.com/wagon-data-871-daun/data/HAM10000_all/{img}.jpg' for img in skin_df['image_id']]
+
+    # skin_df['path'] = [f'https://wagon-data-871-daun.storage.googleapis.com/{img}' for img in skin_df['image_id']]
 
     # hair removal and resizing
     features_list=[]
     for index,row in skin_df.iterrows():
         path = row['path']
 
-        # maybe remove things below again
-        resp = urllib.urlopen(path)
-        image = np.asarray(bytearray(resp.read()), dtype="uint8")
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+        image = tf.io.read_file(path)
+        #image = tf.io.decode_jpeg(image)
 
-        # image = cv2.imread(path)
-        final_image = hair_removal(image)
-        image_resize = cv2.resize(final_image,(100,75))
-        final_image = cv2.cvtColor(final_image, cv2.COLOR_BGR2RGB)
-        features_list.append(final_image)
+        # other try
+        image = load_img(image)
+
+
+        # final_image = hair_removal(image)
+        # image_resize = cv2.resize(final_image,(100,75))
+        # final_image = cv2.cvtColor(final_image, cv2.COLOR_BGR2RGB)
+        # features_list.append(final_image)
 
     skin_df['image_resized'] = features_list
+
+    # skin_df['image'] = skin_df['path'].map(lambda x: np.asarray(Image.open(x)))
+    # OLD(WORKS): path = 'gs://wagon-data-871-daun/data/HAM10000_all/ISIC_0031633.jpg'
 
     return skin_df
 

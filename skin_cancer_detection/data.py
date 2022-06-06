@@ -16,7 +16,7 @@ def get_data_from_gcp(nrows= 5, local=False, optimize=False, **kwargs):
     # Add Client() here
     client = storage.Client()
     if local:
-        path = "..raw_data"
+        path = "../raw_data"
     else:
         path = "gs://wagon-data-871-daun/data/HAM10000_all"
 

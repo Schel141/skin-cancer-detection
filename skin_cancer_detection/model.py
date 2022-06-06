@@ -11,10 +11,8 @@ from data import get_data, data_preparation
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
 from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
-
 ######## Basic Model #############
 def initialize_basic_model():
-
     model = Sequential()
     model.add(layers.experimental.preprocessing.Rescaling(1. / 255))
     model.add(layers.Conv2D(16, (3,3), input_shape=(75, 100, 3), padding='same', activation="relu"))
@@ -24,28 +22,20 @@ def initialize_basic_model():
     model.add(layers.Flatten())
     model.add(layers.Dense(50, activation='relu')) # intermediate layer
     model.add(layers.Dense(7, activation='softmax'))
-
     return model
-
 ####### Pretrained models #############
-
 def load_model():
   model = ResNet50(include_top=False, weights='imagenet', input_shape=(224,224,3),classes=7)
   return model
-
 def set_nontrainable_layers(model):
-
     model.trainable = False
     return model
-
 def add_last_layers(model):
     base_model = set_nontrainable_layers(model)
     flatten_layer = layers.Flatten()
     dense_layer = layers.Dense(500, activation='relu')
     prediction_layer = layers.Dense(7, activation='softmax')
     dropout_layer = layers.Dropout(0.5)
-
-
     model = tf.keras.Sequential([
         base_model,
         dropout_layer,
@@ -54,32 +44,25 @@ def add_last_layers(model):
         prediction_layer
     ])
     return model
-
 def build_model():
     model = load_model()
     model = add_last_layers(model)
     return model
-
-
 ################### compile & fit #########
-
 def compile_model(model):
     model.compile(
     optimizer = 'adam',
     loss = 'categorical_crossentropy', # "sparse_" allows to avoid one-hot-encoding the target
     metrics = ['accuracy','Recall', 'Precision'])
     return model
-
 def fit_model_val_split(model, X_train_stack, y_train):
     es = EarlyStopping(patience = 10, restore_best_weights = True)
-
     model.fit(X_train_stack, y_train,
                     validation_split = 0.2,
                     callbacks = [es],
                     epochs = 50,
                     batch_size = 32)
     return model
-
 def data_augmentation():
     datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
@@ -93,35 +76,23 @@ def data_augmentation():
         height_shift_range=0,  # randomly shift images vertically (fraction of total height)
         horizontal_flip=True,  # randomly flip images
         vertical_flip=True)  # randomly flip images
-
     datagen.fit(X_train_stack)
-
     return datagen
-
-
 def fit_model_data_augmentation_with_val(datagen, model, X_train_stack,X_val_stack, y_train, y_val):
-
-
     es = EarlyStopping(patience=10, restore_best_weights=True)
-
     model.fit_generator(datagen.flow(X_train_stack,y_train, batch_size=32),
                               validation_data = (X_val_stack,y_val),
                               epochs = 35,
                               callbacks = [es])
     return model
-
 def fit_model_data_augmentation_without_val(datagen,model, X_train_stack, y_train):
-
     es = EarlyStopping(patience=10, restore_best_weights=True, monitor = 'loss')
-
     model.fit_generator(datagen.flow(X_train_stack,y_train, batch_size=32),
                               epochs = 35,
                               callbacks = [es])
     return model
-
 def evaluate_model(X_test_stack, y_test, model):
     print(model.evaluate(X_test_stack, y_test))
-
 if __name__ == '__main__':
     skin_df = get_data(100,75)
     X_train_stack, X_test_stack, y_train, y_test = data_preparation(skin_df, val_set = False)

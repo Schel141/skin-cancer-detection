@@ -10,11 +10,6 @@ import cv2
 import os
 import joblib
 import tensorflow as tf
-#import tensorflow.keras
-from tensorflow.keras import models
-from tensorflow.keras import Sequential, layers
-from tensorflow.keras.layers import Reshape
-from tensorflow.keras.metrics import Recall, Precision
 import pickle
 
 
@@ -82,16 +77,16 @@ if agree:
 
     if st.button('Check my lesion'):
         if uploaded_file is not None:
-            X_input = np.asarray(Image.open(uploaded_file).resize((100,75)))
+            X_input = np.asarray(Image.open(uploaded_file).resize((224,224)))
             #X_input = np.asarray(Image.open(uploaded_file))
             #st.markdown(f'### predicted type: {X_input.shape}')
             #X_input_stack = np.stack(X_input)
         else:
-            X_input = np.asarray(Image.open(camera_file).resize((100,75)))
-        X_input_stack = np.reshape(X_input,(1,75,100,3))
+            X_input = np.asarray(Image.open(camera_file).resize((224,224)))
+        X_input_stack = np.reshape(X_input,(1,224,224,3))
         #st.markdown(f'### predicted type: {X_input_stack.shape}')
 
-        joblib_model = joblib.load('basis_with_aug_model.joblib')
+        joblib_model = joblib.load('../raw_data/model_resnet_224_augmented.joblib')
         # loaded_model = pickle.load(open('basic_with_aug_model', 'rb'))
         cancer_type = joblib_model.predict(X_input_stack)
         probability = cancer_type
@@ -121,7 +116,7 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
-            st.markdown("Vascular lesions are relatively common abnormalities of the skin and underlying tissues, more commonly known as birthmarks. (Source: ssmhealth.com")
+            st.markdown("Vascular lesions are relatively common abnormalities of the skin and underlying tissues, more commonly known as birthmarks. (Source: ssmhealth.com)")
         if endresult == 'melanoma':
             image = Image.open('../red.jpg')
             col1, col2, col3 = st.columns([1,6,1])
@@ -133,7 +128,7 @@ if agree:
                 st.write("")
             st.markdown("Melanoma is a serious form of skin cancer that begins in cells known as melanocytes. While it is less common than basal cell carcinoma (BCC) and squamous cell carcinoma (SCC), melanoma is more dangerous because of its ability to spread to other organs more rapidly if it is not treated at an early stage. (Source: skincancer.org)")
         if endresult == 'melanocytic nevi':
-            image = Image.open('../yellow.jpg')
+            image = Image.open('../green.jpg')
             col1, col2, col3 = st.columns([1,6,1])
             with col1:
                 st.write("")
@@ -151,7 +146,11 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
+            st.markdown("Dermatofibromas are common noncancerous (benign) skin growths. They are firm to hard, and they are skin-colored or slightly pigmented. These lesions usually persist for life, and they may heal as depressed scars after several years. (Source: skinsight.com)")
+=======
             st.markdown("Dermatofibromas are common noncancerous (benign) skin growths. They are firm to hard, and they are skin-colored or slightly pigmented. These lesions usually persist for life, and they may heal as depressed scars after several years. (Source: skinsight.com")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689
         if endresult == 'basal cell carcinoma':
             image = Image.open('../red.jpg')
             col1, col2, col3 = st.columns([1,6,1])
@@ -161,7 +160,11 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
+            st.markdown("A basal cell carcinoma is a cancerous skin lesion and the most common type of skin cancer. It most often develops in skin areas which have been exposed to direct sunlight. Although it grows slowly and seldomly spreads to another part of the body, treatment is important. Given time to grow, this skin cancer can grow deep, injuring nerves, blood vessels, and anything else in its path. (Source: aad.org)")
+=======
             st.markdown("A basal cell carcinoma is a cancerous skin lesion and the most common type of skin cancer. It most often develops in skin areas which have been exposed to direct sunlight. Although it grows slowly and seldomly spreads to another part of the body, treatment is important. Given time to grow, this skin cancer can grow deep, injuring nerves, blood vessels, and anything else in its path. (Source: aad.org")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689
         if endresult == "Actinic keratoses and intraepithelial carcinoma / Bowen's disease":
             image = Image.open('../yellow.jpg')
             col1, col2, col3 = st.columns([1,6,1])
@@ -171,5 +174,10 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
+            st.markdown("An actinic keratosis is a rough, scaly patch on the skin that develops from years of sun exposure. Left untreated, the risk of actinic keratoses turning into a type of skin cancer called squamous cell carcinoma is about 5% to 10%. (Source: mayoclinic.org)")
+            st.markdown("Bowen's disease is a very early form of skin cancer that's easily treatable. The main sign is a red, scaly patch on the skin. The patch is usually very slow growing, but there's a small chance it could turn into a more serious type of skin cancer if left untreated. (Source: nhs.uk)")
+=======
             st.markdown("An actinic keratosis is a rough, scaly patch on the skin that develops from years of sun exposure. Left untreated, the risk of actinic keratoses turning into a type of skin cancer called squamous cell carcinoma is about 5% to 10%. (Source: mayoclinic.org")
             st.markdown("Bowen's disease is a very early form of skin cancer that's easily treatable. The main sign is a red, scaly patch on the skin. The patch is usually very slow growing, but there's a small chance it could turn into a more serious type of skin cancer if left untreated. (Source: nhs.uk")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689

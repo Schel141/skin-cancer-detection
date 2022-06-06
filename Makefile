@@ -102,11 +102,11 @@ upload_data:
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 
 PACKAGE_NAME=skin-cancer-detection
-FILENAME=trainer
+FILENAME=model
 
 ##### Job - - - - - - - - - - - - - - - - - - - - - - - - -
-
-JOB_NAME=taxi_fare_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
+# TO ADD
+JOB_NAME=ADD_PIPELINE_OR_FUNCTION$(shell date +'%Y%m%d_%H%M%S')
 
 
 run_locally:

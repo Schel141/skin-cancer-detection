@@ -30,7 +30,7 @@ with st.expander("The Process of Skin Cancer Detection"):
     st.write("The process of skin cancer detection has significantly improved over the last years. Many different")
     st.write(" techniques have been applied. Particularly, the method of image classification has taken the")
     st.write("accuracy of the diagnosis to a whole new level.")
-    st.write("...")
+    st.write("This model classifies the input as one out of seven diagnostic categories of pigmented lesions.")
 
 col1,col2 = st.columns(2)
 
@@ -48,45 +48,124 @@ with col1:
         #st.write('')
 
 with col2:
-    with st.expander("Option 1: Upload an Image"):
-        uploaded_file = st.file_uploader("Option 1: Upload your Picture")
+    with st.expander("Option 1: Upload a Photo"):
+        uploaded_file = st.file_uploader("Insert your Photo here")
         if uploaded_file:
             st.image(uploaded_file, width = 228)
 
     st.markdown('#')
     st.markdown('#')
 
-    with st.expander("Option 2: Take a Picture"):
-        camera_file = st.camera_input ("Take a Picture")
+    with st.expander("Option 2: Take a Photo with your camera"):
+        camera_file = st.camera_input ("")
         if camera_file:
             st.image(camera_file, width = 225)
 
 st.markdown('#')
 
-st.checkbox("I agree, that due to limitations we cannot guarantee the complete correchtness of our predicition.")
+agree = st.checkbox("*I am aware that this model cannot replace the assessment of a doctor.")
+if agree:
+    st.markdown('#')
 
-st.markdown('#')
-
-col1,col2,col3,col4,col5 = st.columns(5)
-with col1:
-    pass
-with col2:
-    pass
-#with col3:
-#    st.button("Submit")
-with col4:
-    pass
-with col5:
-    pass
+    col1,col2,col3,col4,col5 = st.columns(5)
+    with col1:
+        pass
+    with col2:
+        pass
+    #with col3:
+    #    st.button("Submit")
+    with col4:
+        pass
+    with col5:
+        pass
 
 
-if st.button('Submit'):
-    X_input = np.asarray(Image.open(uploaded_file).resize((100,75)))
-    X_input_stack = np.stack(X_input)
+    if st.button('Check my lesion'):
+        if uploaded_file is not None:
+            X_input = np.asarray(Image.open(uploaded_file).resize((100,75)))
+            #X_input = np.asarray(Image.open(uploaded_file))
+            #st.markdown(f'### predicted type: {X_input.shape}')
+            #X_input_stack = np.stack(X_input)
+        else:
+            X_input = np.asarray(Image.open(camera_file).resize((100,75)))
+        X_input_stack = np.reshape(X_input,(1,75,100,3))
+        #st.markdown(f'### predicted type: {X_input_stack.shape}')
 
-    #joblib_model = joblib.load('basis_with_aug_model.joblib')
-    loaded_model = pickle.load(open('basic_model', 'rb'))
-    cancer_type = loaded_model.predict(X_input_stack)
-    st.markdown(f'### predicted type: {cancer_type}')
-
-#pickle instead of joblib
+        joblib_model = joblib.load('basis_with_aug_model.joblib')
+        # loaded_model = pickle.load(open('basic_with_aug_model', 'rb'))
+        cancer_type = joblib_model.predict(X_input_stack)
+        probability = cancer_type
+            #[np.argmax(cancer_type)]*100
+        CLASSES = ["benign keratosis-like lesions", "melanocytic nevi", "dermatofibroma", "melanoma", "vascular lesions", "basal cell carcinoma", "Actinic keratoses and intraepithelial carcinoma / Bowen's disease"]
+        endresult = CLASSES[np.argmax(cancer_type)]
+        st.markdown(f'### predicted type: {endresult}')
+        # st.markdown(f'### predicted type: {endresult}, probability:{probability}')
+        if endresult == 'benign keratosis-like lesions':
+            st.markdown('These include solar lentigines / seborrheic keratoses and lichen-planus like keratoses')
+            image = Image.open('../green.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+            st.markdown("They appear gradually, usually on the face, neck, chest or back. Seborrheic keratoses are harmless and not contagious. They don't need treatment, but you may decide to have them removed if they become irritated by clothing or you don't like how they look. (Source: mayoclinic.org")
+        if endresult == 'vascular lesions':
+            st.markdown('These include angiomas, angiokeratomas, pyogenic granulomas and hemorrhage')
+            image = Image.open('../green.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+            st.markdown("Vascular lesions are relatively common abnormalities of the skin and underlying tissues, more commonly known as birthmarks. (Source: ssmhealth.com")
+        if endresult == 'melanoma':
+            image = Image.open('../red.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+            st.markdown("Melanoma is a serious form of skin cancer that begins in cells known as melanocytes. While it is less common than basal cell carcinoma (BCC) and squamous cell carcinoma (SCC), melanoma is more dangerous because of its ability to spread to other organs more rapidly if it is not treated at an early stage. (Source: skincancer.org")
+        if endresult == 'melanocytic nevi':
+            image = Image.open('../yellow.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+            st.markdown("A melanocytic naevus, or mole, is a common benign skin lesion due to a local proliferation of pigment cells (melanocytes). A brown or black melanocytic naevus contains the pigment melanin, so may also be called a pigmented naevus. It can be present at birth (a congenital melanocytic naevus) or appear later (an acquired naevus). (Source: dermnetnz.org)")
+        if endresult == 'dermatofibroma':
+            image = Image.open('../green.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+        if endresult == 'basal cell carcinoma':
+            image = Image.open('../red.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")
+        if endresult == "Actinic keratoses and intraepithelial carcinoma / Bowen's disease":
+            image = Image.open('../yellow.jpg')
+            col1, col2, col3 = st.columns([1,6,1])
+            with col1:
+                st.write("")
+            with col2:
+                st.image(image, width=(200))
+            with col3:
+                st.write("")

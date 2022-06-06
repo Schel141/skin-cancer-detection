@@ -11,6 +11,7 @@ from data import get_data, data_preparation
 from tensorflow.keras.applications.resnet50 import ResNet50
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
 from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
+
 ######## Basic Model #############
 def initialize_basic_model():
     model = Sequential()
@@ -23,6 +24,7 @@ def initialize_basic_model():
     model.add(layers.Dense(50, activation='relu')) # intermediate layer
     model.add(layers.Dense(7, activation='softmax'))
     return model
+  
 ####### Pretrained models #############
 def load_model():
   model = ResNet50(include_top=False, weights='imagenet', input_shape=(224,224,3),classes=7)
@@ -30,6 +32,7 @@ def load_model():
 def set_nontrainable_layers(model):
     model.trainable = False
     return model
+  
 def add_last_layers(model):
     base_model = set_nontrainable_layers(model)
     flatten_layer = layers.Flatten()
@@ -44,6 +47,7 @@ def add_last_layers(model):
         prediction_layer
     ])
     return model
+  
 def build_model():
     model = load_model()
     model = add_last_layers(model)
@@ -63,6 +67,7 @@ def fit_model_val_split(model, X_train_stack, y_train):
                     epochs = 50,
                     batch_size = 32)
     return model
+  
 def data_augmentation():
     datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
@@ -78,6 +83,7 @@ def data_augmentation():
         vertical_flip=True)  # randomly flip images
     datagen.fit(X_train_stack)
     return datagen
+  
 def fit_model_data_augmentation_with_val(datagen, model, X_train_stack,X_val_stack, y_train, y_val):
     es = EarlyStopping(patience=10, restore_best_weights=True)
     model.fit_generator(datagen.flow(X_train_stack,y_train, batch_size=32),
@@ -85,6 +91,7 @@ def fit_model_data_augmentation_with_val(datagen, model, X_train_stack,X_val_sta
                               epochs = 35,
                               callbacks = [es])
     return model
+  
 def fit_model_data_augmentation_without_val(datagen,model, X_train_stack, y_train):
     es = EarlyStopping(patience=10, restore_best_weights=True, monitor = 'loss')
     model.fit_generator(datagen.flow(X_train_stack,y_train, batch_size=32),

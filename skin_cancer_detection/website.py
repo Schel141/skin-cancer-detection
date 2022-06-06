@@ -131,7 +131,7 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
-            st.markdown("Melanoma is a serious form of skin cancer that begins in cells known as melanocytes. While it is less common than basal cell carcinoma (BCC) and squamous cell carcinoma (SCC), melanoma is more dangerous because of its ability to spread to other organs more rapidly if it is not treated at an early stage. (Source: skincancer.org")
+            st.markdown("Melanoma is a serious form of skin cancer that begins in cells known as melanocytes. While it is less common than basal cell carcinoma (BCC) and squamous cell carcinoma (SCC), melanoma is more dangerous because of its ability to spread to other organs more rapidly if it is not treated at an early stage. (Source: skincancer.org)")
         if endresult == 'melanocytic nevi':
             image = Image.open('../yellow.jpg')
             col1, col2, col3 = st.columns([1,6,1])

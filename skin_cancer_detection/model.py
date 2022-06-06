@@ -8,8 +8,11 @@ from tensorflow.keras.metrics import Recall, Precision
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from data import get_data, data_preparation
+from tensorflow.keras.applications.resnet50 import ResNet50
+from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2
+from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
 
-
+######## Basic Model #############
 def initialize_basic_model():
 
     model = Sequential()
@@ -24,6 +27,41 @@ def initialize_basic_model():
 
     return model
 
+####### Pretrained models #############
+
+def load_model():
+  model = ResNet50(include_top=False, weights='imagenet', input_shape=(224,224,3),classes=7)
+  return model
+
+def set_nontrainable_layers(model):
+
+    model.trainable = False
+    return model
+
+def add_last_layers(model):
+    base_model = set_nontrainable_layers(model)
+    flatten_layer = layers.Flatten()
+    dense_layer = layers.Dense(500, activation='relu')
+    prediction_layer = layers.Dense(7, activation='softmax')
+    dropout_layer = layers.Dropout(0.5)
+
+
+    model = tf.keras.Sequential([
+        base_model,
+        dropout_layer,
+        flatten_layer,
+        dense_layer,
+        prediction_layer
+    ])
+    return model
+
+def build_model():
+    model = load_model()
+    model = add_last_layers(model)
+    return model
+
+
+################### compile & fit #########
 
 def compile_model(model):
     model.compile(
@@ -31,8 +69,6 @@ def compile_model(model):
     loss = 'categorical_crossentropy', # "sparse_" allows to avoid one-hot-encoding the target
     metrics = ['accuracy','Recall', 'Precision'])
     return model
-
-
 
 def fit_model_val_split(model, X_train_stack, y_train):
     es = EarlyStopping(patience = 10, restore_best_weights = True)

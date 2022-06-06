@@ -146,7 +146,11 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
             st.markdown("Dermatofibromas are common noncancerous (benign) skin growths. They are firm to hard, and they are skin-colored or slightly pigmented. These lesions usually persist for life, and they may heal as depressed scars after several years. (Source: skinsight.com)")
+=======
+            st.markdown("Dermatofibromas are common noncancerous (benign) skin growths. They are firm to hard, and they are skin-colored or slightly pigmented. These lesions usually persist for life, and they may heal as depressed scars after several years. (Source: skinsight.com")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689
         if endresult == 'basal cell carcinoma':
             image = Image.open('../red.jpg')
             col1, col2, col3 = st.columns([1,6,1])
@@ -156,7 +160,11 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
             st.markdown("A basal cell carcinoma is a cancerous skin lesion and the most common type of skin cancer. It most often develops in skin areas which have been exposed to direct sunlight. Although it grows slowly and seldomly spreads to another part of the body, treatment is important. Given time to grow, this skin cancer can grow deep, injuring nerves, blood vessels, and anything else in its path. (Source: aad.org)")
+=======
+            st.markdown("A basal cell carcinoma is a cancerous skin lesion and the most common type of skin cancer. It most often develops in skin areas which have been exposed to direct sunlight. Although it grows slowly and seldomly spreads to another part of the body, treatment is important. Given time to grow, this skin cancer can grow deep, injuring nerves, blood vessels, and anything else in its path. (Source: aad.org")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689
         if endresult == "Actinic keratoses and intraepithelial carcinoma / Bowen's disease":
             image = Image.open('../yellow.jpg')
             col1, col2, col3 = st.columns([1,6,1])
@@ -166,5 +174,10 @@ if agree:
                 st.image(image, width=(200))
             with col3:
                 st.write("")
+<<<<<<< HEAD
             st.markdown("An actinic keratosis is a rough, scaly patch on the skin that develops from years of sun exposure. Left untreated, the risk of actinic keratoses turning into a type of skin cancer called squamous cell carcinoma is about 5% to 10%. (Source: mayoclinic.org)")
             st.markdown("Bowen's disease is a very early form of skin cancer that's easily treatable. The main sign is a red, scaly patch on the skin. The patch is usually very slow growing, but there's a small chance it could turn into a more serious type of skin cancer if left untreated. (Source: nhs.uk)")
+=======
+            st.markdown("An actinic keratosis is a rough, scaly patch on the skin that develops from years of sun exposure. Left untreated, the risk of actinic keratoses turning into a type of skin cancer called squamous cell carcinoma is about 5% to 10%. (Source: mayoclinic.org")
+            st.markdown("Bowen's disease is a very early form of skin cancer that's easily treatable. The main sign is a red, scaly patch on the skin. The patch is usually very slow growing, but there's a small chance it could turn into a more serious type of skin cancer if left untreated. (Source: nhs.uk")
+>>>>>>> e49e6796e48ec8d69ea2b79e3215946482700689

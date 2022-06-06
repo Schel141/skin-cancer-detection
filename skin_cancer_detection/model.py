@@ -80,8 +80,7 @@ def fit_model_val_split(model, X_train_stack, y_train):
                     batch_size = 32)
     return model
 
-def fit_model_data_augmentation_with_val(model, X_train_stack,X_val_stack, y_train, y_val):
-
+def data_augmentation():
     datagen = ImageDataGenerator(
         featurewise_center=False,  # set input mean to 0 over the dataset
         samplewise_center=False,  # set each sample mean to 0
@@ -96,6 +95,12 @@ def fit_model_data_augmentation_with_val(model, X_train_stack,X_val_stack, y_tra
         vertical_flip=True)  # randomly flip images
 
     datagen.fit(X_train_stack)
+
+    return datagen
+
+
+def fit_model_data_augmentation_with_val(datagen, model, X_train_stack,X_val_stack, y_train, y_val):
+
 
     es = EarlyStopping(patience=10, restore_best_weights=True)
 
@@ -105,22 +110,7 @@ def fit_model_data_augmentation_with_val(model, X_train_stack,X_val_stack, y_tra
                               callbacks = [es])
     return model
 
-def fit_model_data_augmentation_without_val(model, X_train_stack, y_train):
-
-    datagen = ImageDataGenerator(
-        featurewise_center=False,  # set input mean to 0 over the dataset
-        samplewise_center=False,  # set each sample mean to 0
-        featurewise_std_normalization=False,  # divide inputs by std of the dataset
-        samplewise_std_normalization=False,  # divide each input by its std
-        zca_whitening=False,  # apply ZCA whitening
-        rotation_range=10,  # randomly rotate images in the range (degrees, 0 to 180)
-        zoom_range = 0.1, # Randomly zoom image
-        width_shift_range=0,  # randomly shift images horizontally (fraction of total width)
-        height_shift_range=0,  # randomly shift images vertically (fraction of total height)
-        horizontal_flip=True,  # randomly flip images
-        vertical_flip=True)  # randomly flip images
-
-    datagen.fit(X_train_stack)
+def fit_model_data_augmentation_without_val(datagen,model, X_train_stack, y_train):
 
     es = EarlyStopping(patience=10, restore_best_weights=True, monitor = 'loss')
 

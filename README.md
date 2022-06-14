@@ -1,6 +1,6 @@
 # Skin Cancer Detection
 
-This is a project that focused on the detection of skin cancer using deep learning. 
+This is a project that focused on the detection of skin cancer based on dermatoscopic images using Deep Learning.  
 
 # Data Source
 

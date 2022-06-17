@@ -1,6 +1,6 @@
 # Skin Cancer Detection
 
-This project focuses on the detection of skin cancer based on dermatoscopic images using Convolutional Neural Networks (CNN). We built our own CNN to classify the dermatoscopic images into seven categories (please see Data Source for a description of the categories), but we also used different pretrained models (e.g. VGG16, ResNet-50, MobileNet V2). The best results we achieved with the ResNet-50 model (F1-score: 0.79). Furthermore, we created a website (https://skicadetec.herokuapp.com/) with streamlit, to detect the class of a skin lesion that can contribute to the early detection of skin cancer. The code for the website can be fount at https://github.com/Schel141/SkicadeApp.
+This project focuses on the detection of skin cancer based on dermatoscopic images using Convolutional Neural Networks (CNN). We built our own CNN to classify the dermatoscopic images into seven categories (please see Data Source for a description of the categories), but we also used different pretrained models (e.g. VGG16, ResNet-50, MobileNet V2). The best results we achieved with the ResNet-50 model (F1-score: 0.79). Furthermore, we created a website (https://skicadetec.herokuapp.com/) with streamlit, to detect the class of a skin lesion image with our pre-trained model. This can contribute to the early detection of skin cancer. The code for the website can be found at https://github.com/Schel141/SkicadeApp.
 
 # Data Source
 
